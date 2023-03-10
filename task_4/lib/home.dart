@@ -1,7 +1,10 @@
 import 'dart:math';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:task_4/api_service.dart';
+import 'package:task_4/model.dart';
+import 'dart:convert';
 
 class home extends StatefulWidget {
   const home({super.key});
@@ -848,27 +851,131 @@ class _homeState extends State<home> {
   }
 }
 
-class Learn extends StatelessWidget {
+class Learn extends StatefulWidget {
   const Learn({super.key});
 
   @override
+  State<Learn> createState() => _LearnState();
+}
+
+Map mapResponse1 = {};
+List listRespones1 = [];
+
+class _LearnState extends State<Learn> {
+  @override
+  Future apicall() async {
+    http.Response response;
+    response = await http.get(
+        Uri.parse("https://632017e19f82827dcf24a655.mockapi.io/api/lessons"));
+    if (response.statusCode == 200) {
+      // stringResponse = response.body;
+      mapResponse1 = json.decode(response.body);
+      listRespones1 = mapResponse1['items'];
+    }
+  }
+
+  void initState() {
+    apicall();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text('Learn'),
+    return Scaffold(
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                listRespones1[index]['name'].toString(),
+                style: TextStyle(color: Colors.black, fontSize: 18),
+              ),
+              Text(
+                'Category: ${listRespones1[index]['category'].toString()}',
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              ),
+              Text(
+                'Id: ${listRespones1[index]['id'].toString()}',
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              ),
+              Text(
+                'Created At: ${listRespones1[index]['createdAt'].toString()}',
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              ),
+              Text(
+                'Locked: ${listRespones1[index]['locked'].toString()}',
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              ),
+              SizedBox(
+                height: 10,
+              )
+            ],
+          );
+        },
+        itemCount: listRespones1 == null ? 0 : listRespones1.length,
       ),
     );
   }
 }
 
-class Chat extends StatelessWidget {
-  const Chat({super.key});
+Map mapResponse = {};
+List listRespones = [];
+
+class Chat extends StatefulWidget {
+  Chat({super.key});
+
+  @override
+  State<Chat> createState() => _ChatState();
+}
+
+class _ChatState extends State<Chat> {
+  Future apicall() async {
+    http.Response response;
+    response = await http.get(
+        Uri.parse("https://632017e19f82827dcf24a655.mockapi.io/api/programs"));
+    if (response.statusCode == 200) {
+      // stringResponse = response.body;
+      mapResponse = json.decode(response.body);
+      listRespones = mapResponse['items'];
+    }
+  }
+
+  void initState() {
+    apicall();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text('Chat'),
+    return Scaffold(
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                listRespones[index]['name'].toString(),
+                style: TextStyle(color: Colors.black, fontSize: 18),
+              ),
+              Text(
+                'Category: ${listRespones[index]['category'].toString()}',
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              ),
+              Text(
+                'Lesson: ${listRespones[index]['lesson'].toString()}',
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              ),
+              Text(
+                'Created At: ${listRespones[index]['createdAt'].toString()}',
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              ),
+              SizedBox(
+                height: 10,
+              )
+            ],
+          );
+        },
+        itemCount: listRespones == null ? 0 : listRespones.length,
       ),
     );
   }
