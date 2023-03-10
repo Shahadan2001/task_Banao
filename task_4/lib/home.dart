@@ -2,8 +2,6 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:task_4/api_service.dart';
-import 'package:task_4/model.dart';
 import 'dart:convert';
 
 class home extends StatefulWidget {
