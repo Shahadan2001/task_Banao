@@ -864,11 +864,14 @@ class _LearnState extends State<Learn> {
   Future apicall() async {
     http.Response response;
     response = await http.get(
-        Uri.parse("https://632017e19f82827dcf24a655.mockapi.io/api/lessons"));
+      Uri.parse("https://632017e19f82827dcf24a655.mockapi.io/api/lessons"),
+    );
     if (response.statusCode == 200) {
+      setState(() {
+        mapResponse1 = json.decode(response.body);
+        listRespones1 = mapResponse1['items'];
+      });
       // stringResponse = response.body;
-      mapResponse1 = json.decode(response.body);
-      listRespones1 = mapResponse1['items'];
     }
   }
 
@@ -932,9 +935,11 @@ class _ChatState extends State<Chat> {
     response = await http.get(
         Uri.parse("https://632017e19f82827dcf24a655.mockapi.io/api/programs"));
     if (response.statusCode == 200) {
+      setState(() {
+        mapResponse = json.decode(response.body);
+        listRespones = mapResponse['items'];
+      });
       // stringResponse = response.body;
-      mapResponse = json.decode(response.body);
-      listRespones = mapResponse['items'];
     }
   }
 
